@@ -40,6 +40,7 @@ interface DataTableProps<TData> {
   filterColumn?: string
   defaultVisibility?: VisibilityState
   pageSize?: number
+  meta?: Record<string, any>
 }
 
 export function DataTable<TData>({
@@ -48,6 +49,7 @@ export function DataTable<TData>({
   filterColumn,
   defaultVisibility,
   pageSize = 500,
+  meta,
 }: DataTableProps<TData>) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
@@ -67,6 +69,7 @@ export function DataTable<TData>({
     getFilteredRowModel: getFilteredRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
+    meta,
     state: {
       sorting,
       columnFilters,
@@ -95,7 +98,7 @@ export function DataTable<TData>({
         )}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" className="ml-auto h-8 text-xs">
+            <Button variant="outline" className="ml-auto justify-between">
               Columns <ChevronDown className="ml-1 h-3.5 w-3.5" />
             </Button>
           </DropdownMenuTrigger>
