@@ -1,3 +1,10 @@
+export type StorageType = 'local' | 'api';
+
+export interface StorageOptions {
+  storage?: StorageType;
+  onError?: (error: Error) => void;
+}
+
 export const storage = {
   get: <T>(key: string): T | null => {
     try {
@@ -9,19 +16,21 @@ export const storage = {
     }
   },
 
-  set: <T>(key: string, value: T): void => {
+  set: async <T>(key: string, value: T): Promise<void> => {
     try {
       localStorage.setItem(key, JSON.stringify(value));
     } catch (error) {
       console.error(`Error setting item ${key} in localStorage:`, error);
+      throw error;
     }
   },
 
-  remove: (key: string): void => {
+  remove: async (key: string): Promise<void> => {
     try {
       localStorage.removeItem(key);
     } catch (error) {
       console.error(`Error removing item ${key} from localStorage:`, error);
+      throw error;
     }
   }
 };

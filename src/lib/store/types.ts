@@ -5,9 +5,9 @@ export interface BaseEntity {
 }
 
 export interface StoreMethods<T extends BaseEntity> {
-  add: (item: Omit<T, keyof BaseEntity>) => void;
-  update: (id: string, item: Partial<Omit<T, keyof BaseEntity>>) => void;
-  remove: (id: string) => void;
+  add: (item: Omit<T, keyof BaseEntity>) => Promise<void>;
+  update: (id: string, item: Partial<Omit<T, keyof BaseEntity>>) => Promise<void>;
+  remove: (id: string) => Promise<void>;
   getAll: () => T[];
   getById: (id: string) => T | undefined;
 }
@@ -15,5 +15,5 @@ export interface StoreMethods<T extends BaseEntity> {
 export interface StoreState<T extends BaseEntity> {
   items: T[];
   isLoading: boolean;
-  error: string | null;
+  error: Error | null;
 }

@@ -17,7 +17,7 @@ export function createEntityStore<T extends BaseEntity>(
       isLoading: false,
       error: null,
 
-      add: (item: Omit<T, keyof BaseEntity>) => {
+      add: async (item: Omit<T, keyof BaseEntity>) => {
         const newItem = {
           ...item,
           id: crypto.randomUUID(),
@@ -25,16 +25,33 @@ export function createEntityStore<T extends BaseEntity>(
           updatedAt: new Date().toISOString(),
         } as T;
 
-        set((state) => {
-          const newItems = [...state.items, newItem];
-          storage.set(storageKey, newItems);
-          return { items: newItems };
-        });
+        // Optimistic update
+        set((state) => ({
+          items: [...state.items, newItem],
+          isLoading: true,
+          error: null
+        }));
+
+        try {
+          await storage.set(storageKey, [...get().items]);
+          set({ isLoading: false });
+        } catch (error) {
+          // Rollback on error
+          set((state) => ({
+            items: state.items.filter(item => item.id !== newItem.id),
+            isLoading: false,
+            error: error instanceof Error ? error : new Error('Failed to add item')
+          }));
+          throw error;
+        }
       },
 
-      update: (id: string, item: Partial<Omit<T, keyof BaseEntity>>) => {
-        set((state) => {
-          const newItems = state.items.map((existingItem) =>
+      update: async (id: string, item: Partial<Omit<T, keyof BaseEntity>>) => {
+        const previousItems = get().items;
+        
+        // Optimistic update
+        set((state) => ({
+          items: state.items.map((existingItem) =>
             existingItem.id === id
               ? {
                   ...existingItem,
@@ -42,18 +59,47 @@ export function createEntityStore<T extends BaseEntity>(
                   updatedAt: new Date().toISOString(),
                 }
               : existingItem
-          );
-          storage.set(storageKey, newItems);
-          return { items: newItems };
-        });
+          ),
+          isLoading: true,
+          error: null
+        }));
+
+        try {
+          await storage.set(storageKey, get().items);
+          set({ isLoading: false });
+        } catch (error) {
+          // Rollback on error
+          set({
+            items: previousItems,
+            isLoading: false,
+            error: error instanceof Error ? error : new Error('Failed to update item')
+          });
+          throw error;
+        }
       },
 
-      remove: (id: string) => {
-        set((state) => {
-          const newItems = state.items.filter((item) => item.id !== id);
-          storage.set(storageKey, newItems);
-          return { items: newItems };
-        });
+      remove: async (id: string) => {
+        const previousItems = get().items;
+        
+        // Optimistic update
+        set((state) => ({
+          items: state.items.filter((item) => item.id !== id),
+          isLoading: true,
+          error: null
+        }));
+
+        try {
+          await storage.set(storageKey, get().items);
+          set({ isLoading: false });
+        } catch (error) {
+          // Rollback on error
+          set({
+            items: previousItems,
+            isLoading: false,
+            error: error instanceof Error ? error : new Error('Failed to remove item')
+          });
+          throw error;
+        }
       },
 
       getAll: () => get().items,
