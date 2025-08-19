@@ -1,6 +1,7 @@
 import { FormDrawer } from "@/components/ui/form-drawer"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { DatePicker } from "@/components/ui/date-picker"
 import {
   Select,
   SelectContent,
@@ -18,11 +19,6 @@ interface TransactionDrawerProps {
   onOpenChange: (open: boolean) => void
   onSave?: (data: Partial<Transaction>) => void
   onAdd?: (data: Partial<Transaction>) => void
-}
-
-function formatDateForInput(dateString: string) {
-  const date = new Date(dateString);
-  return date.toISOString().split('T')[0];
 }
 
 export function TransactionDrawer({ 
@@ -75,15 +71,20 @@ export function TransactionDrawer({
           />
         </div>
 
-        <div className="grid gap-2">
-          <Label htmlFor="date">Date</Label>
-          <Input
-            id="date"
-            name="date"
-            type="date"
-            defaultValue={transaction?.date ? formatDateForInput(transaction.date) : undefined}
-          />
-        </div>
+        <DatePicker
+          label="Date"
+          date={transaction?.date ? new Date(transaction.date) : undefined}
+          onDateChange={(date) => {
+            const formElement = document.querySelector('form');
+            if (formElement) {
+              const dateInput = document.createElement('input');
+              dateInput.type = 'hidden';
+              dateInput.name = 'date';
+              dateInput.value = date ? date.toISOString() : '';
+              formElement.appendChild(dateInput);
+            }
+          }}
+        />
 
         <div className="grid gap-2">
           <Label htmlFor="category">Category</Label>
