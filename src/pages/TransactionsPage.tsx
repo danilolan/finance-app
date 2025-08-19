@@ -5,8 +5,8 @@ import { PopulateDataButton } from '@/components/ui/populate-data-button';
 
 export function TransactionsPage() {
   return (
-    <div className="container mx-auto max-w-7xl space-y-6 p-6">
-      <div className="flex items-center justify-between">
+    <div className="container mx-auto flex h-[calc(100vh-theme(spacing.16))] max-w-7xl flex-col gap-4 overflow-hidden p-6">
+      <div className="flex shrink-0 items-center justify-between">
         <h1 className="text-3xl font-bold tracking-tight">Transactions</h1>
         <div className="flex items-center gap-2">
           <PopulateDataButton />
@@ -16,7 +16,7 @@ export function TransactionsPage() {
           </Button>
         </div>
       </div>
-      <div className="rounded-lg bg-card p-4 shadow-sm">
+      <div className="min-h-0 flex-1">
         <TransactionTable />
       </div>
     </div>

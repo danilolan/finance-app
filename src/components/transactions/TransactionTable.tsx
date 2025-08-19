@@ -1,12 +1,11 @@
 import * as React from "react"
 import { type ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown } from "lucide-react"
+import { ArrowUpDown, Pencil, Trash } from "lucide-react"
 import { toast } from "sonner"
 
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { DataTable } from "@/components/ui/data-table/data-table"
-import { createActionColumn } from "@/components/ui/data-table/action-column"
 import { useTransactionStore } from "@/lib/store/transactions"
 import { useCategoryStore } from "@/lib/store/categories"
 import type { Transaction } from "@/lib/store/transactions"
@@ -53,8 +52,8 @@ export function TransactionTable() {
           loading: 'Updating transaction...',
           success: 'Transaction updated successfully',
           error: 'Failed to update transaction',
-        }
-      )
+      }
+    )
     }
   }
 
@@ -69,6 +68,7 @@ export function TransactionTable() {
           }
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label="Select all"
+          className="h-3 w-3"
         />
       ),
       cell: ({ row }) => (
@@ -76,6 +76,7 @@ export function TransactionTable() {
           checked={row.getIsSelected()}
           onCheckedChange={(value) => row.toggleSelected(!!value)}
           aria-label="Select row"
+          className="h-3 w-3"
         />
       ),
       enableSorting: false,
@@ -87,12 +88,13 @@ export function TransactionTable() {
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="h-6 px-2 text-xs font-medium"
         >
           Description
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ArrowUpDown className="ml-1 h-3 w-3" />
         </Button>
       ),
-      cell: ({ row }) => <div>{row.getValue("name")}</div>,
+      cell: ({ row }) => <div className="text-xs">{row.getValue("name")}</div>,
     },
     {
       accessorKey: "date",
@@ -100,14 +102,15 @@ export function TransactionTable() {
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="h-6 px-2 text-xs font-medium"
         >
           Date
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ArrowUpDown className="ml-1 h-3 w-3" />
         </Button>
       ),
       cell: ({ row }) => {
         const date = new Date(row.getValue("date"))
-        return <div>{date.toLocaleDateString()}</div>
+        return <div className="text-xs">{date.toLocaleDateString()}</div>
       },
     },
     {
@@ -116,15 +119,16 @@ export function TransactionTable() {
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="h-6 px-2 text-xs font-medium"
         >
           Category
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ArrowUpDown className="ml-1 h-3 w-3" />
         </Button>
       ),
       cell: ({ row }) => {
         const categoryId = row.getValue("category") as string
         const category = categories.find(c => c.id === categoryId)
-        return <div>{category?.name}</div>
+        return <div className="text-xs">{category?.name}</div>
       },
     },
     {
@@ -133,9 +137,10 @@ export function TransactionTable() {
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="h-6 px-2 text-xs font-medium"
         >
           Price
-          <ArrowUpDown className="ml-2 h-4 w-4" />
+          <ArrowUpDown className="ml-1 h-3 w-3" />
         </Button>
       ),
       cell: ({ row }) => {
@@ -144,7 +149,7 @@ export function TransactionTable() {
           style: 'currency',
           currency: 'USD'
         }).format(price)
-        return <div className="text-right font-medium">{formatted}</div>
+        return <div className="text-right text-xs font-medium">{formatted}</div>
       },
     },
     {
@@ -154,19 +159,60 @@ export function TransactionTable() {
         const installment = row.getValue("installment") as Transaction["installment"]
         if (!installment) return null
         return (
-          <div className="text-center text-muted-foreground">
+          <div className="text-center text-xs text-muted-foreground">
             {installment.current}/{installment.total}
           </div>
         )
       },
     },
-    createActionColumn({
-      onEdit: (transaction) => {
-        setSelectedTransaction(transaction)
-        setOpen(true)
+    {
+      id: "actions",
+      header: () => <div className="text-right text-xs">Actions</div>,
+      cell: ({ row }) => {
+        const transaction = row.original
+
+        const handleDelete = () => {
+          toast.promise(
+            () => {
+              remove(transaction.id)
+              return Promise.resolve()
+            },
+            {
+              loading: 'Deleting transaction...',
+              success: 'Transaction deleted successfully',
+              error: 'Failed to delete transaction',
+            }
+          )
+        }
+
+        return (
+          <div className="flex justify-end gap-1">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-5 w-5"
+              onClick={() => {
+                setSelectedTransaction(transaction)
+                setOpen(true)
+              }}
+            >
+              <Pencil className="h-3 w-3" />
+              <span className="sr-only">Edit</span>
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-5 w-5 text-red-600 hover:text-red-700"
+              onClick={handleDelete}
+            >
+              <Trash className="h-3 w-3" />
+              <span className="sr-only">Delete</span>
+            </Button>
+          </div>
+        )
       },
-      onDelete: (transaction) => remove(transaction.id),
-    }),
+      enableHiding: false,
+    },
   ]
 
   return (
@@ -178,6 +224,7 @@ export function TransactionTable() {
         defaultVisibility={{
           installment: false,
         }}
+        pageSize={500}
       />
       <TransactionDrawer
         transaction={selectedTransaction}
