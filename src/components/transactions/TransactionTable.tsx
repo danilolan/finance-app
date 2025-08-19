@@ -95,7 +95,7 @@ export function TransactionTable() {
           <ArrowUpDown className="ml-1 h-3 w-3" />
         </Button>
       ),
-      cell: ({ row }) => <div className="text-xs">{row.getValue("name")}</div>,
+      cell: ({ row }) => <div className="pl-3 text-xs">{row.getValue("name")}</div>,
     },
     {
       accessorKey: "date",
@@ -111,7 +111,7 @@ export function TransactionTable() {
       ),
       cell: ({ row }) => {
         const date = new Date(row.getValue("date"))
-        return <div className="text-xs">{date.toLocaleDateString()}</div>
+        return <div className="pl-3 text-xs">{date.toLocaleDateString()}</div>
       },
     },
     {
@@ -129,7 +129,7 @@ export function TransactionTable() {
       cell: ({ row }) => {
         const categoryId = row.getValue("category") as string
         const category = categories.find(c => c.id === categoryId)
-        return <div className="text-xs">{category?.name}</div>
+        return <div className="pl-2 text-xs">{category?.name}</div>
       },
     },
     {
@@ -138,7 +138,7 @@ export function TransactionTable() {
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="h-6 px-2 text-xs font-medium"
+          className="h-6 px-2 text-xs font-medium w-[80px] text-right"
         >
           Price
           <ArrowUpDown className="ml-1 h-3 w-3" />
@@ -147,7 +147,7 @@ export function TransactionTable() {
       cell: ({ row }) => {
         const price = row.getValue("price") as number
         return (
-          <div className="text-right">
+          <div className="w-[80px] px-2 text-right">
             <Money value={price} colored={false} className="text-xs font-medium" />
           </div>
         )

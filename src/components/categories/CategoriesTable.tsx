@@ -76,7 +76,7 @@ export const columns: ColumnDef<Category>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => <div className="capitalize">{row.getValue("name")}</div>,
+    cell: ({ row }) => <div className="capitalize pl-3">{row.getValue("name")}</div>,
   },
   {
     accessorKey: "createdAt",
