@@ -20,6 +20,11 @@ interface TransactionDrawerProps {
   onAdd?: (data: Partial<Transaction>) => void
 }
 
+function formatDateForInput(dateString: string) {
+  const date = new Date(dateString);
+  return date.toISOString().split('T')[0];
+}
+
 export function TransactionDrawer({ 
   transaction, 
   open, 
@@ -76,7 +81,7 @@ export function TransactionDrawer({
             id="date"
             name="date"
             type="date"
-            defaultValue={transaction?.date}
+            defaultValue={transaction?.date ? formatDateForInput(transaction.date) : undefined}
           />
         </div>
 
