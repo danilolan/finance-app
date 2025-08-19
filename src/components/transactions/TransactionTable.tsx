@@ -138,7 +138,7 @@ export function TransactionTable() {
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="h-6 px-2 text-xs font-medium w-[80px] text-right"
+          className="h-6 px-2 text-xs font-medium w-[90px] text-right"
         >
           Price
           <ArrowUpDown className="ml-1 h-3 w-3" />
@@ -147,7 +147,7 @@ export function TransactionTable() {
       cell: ({ row }) => {
         const price = row.getValue("price") as number
         return (
-          <div className="w-[80px] px-2 text-right">
+          <div className="w-[90px] px-2 text-right">
             <Money value={price} colored={false} className="text-xs font-medium" />
           </div>
         )
