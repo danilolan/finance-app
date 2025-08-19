@@ -1,6 +1,6 @@
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/atoms/button';
 import { Plus } from 'lucide-react';
-import { CategoriesTable } from '@/components/categories/CategoriesTable';
+import { CategoriesTable } from '@/components/organisms/categories/CategoriesTable';
 
 export function CategoriesPage() {
   return (

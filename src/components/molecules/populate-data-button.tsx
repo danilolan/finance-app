@@ -1,6 +1,6 @@
 'use client';
 
-import { Button } from './button';
+import { Button } from '@/components/atoms/button';
 import { populateStores } from '@/lib/store/mock-data';
 import { useCategoryStore } from '@/lib/store/entities/categories';
 import { useTransactionStore } from '@/lib/store/entities/transactions';

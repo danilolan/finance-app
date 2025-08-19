@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom"
-import { SidebarProvider } from "@/components/ui/sidebar"
+import { SidebarProvider } from "@/components/atoms/sidebar"
 import { AppSidebar } from "./AppSidebar"
-import { Toaster } from "@/components/ui/sonner"
+import { Toaster } from "@/components/atoms/sonner"
 
 export function RootLayout() {
   return (

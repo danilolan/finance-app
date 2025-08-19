@@ -15,14 +15,14 @@ import {
 } from "@tanstack/react-table"
 import { ChevronDown } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/atoms/button"
 import {
   DropdownMenu,
   DropdownMenuCheckboxItem,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
+} from "@/components/molecules/dropdown-menu"
+import { Input } from "@/components/atoms/input"
 import {
   Table,
   TableBody,
@@ -30,8 +30,8 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
-import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area"
+} from "@/components/molecules/table"
+import { ScrollArea, ScrollBar } from "@/components/molecules/scroll-area"
 import { cn } from "@/lib/utils"
 
 interface DataTableProps<TData> {

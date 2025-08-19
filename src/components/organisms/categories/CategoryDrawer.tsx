@@ -1,6 +1,6 @@
-import { FormDrawer } from "@/components/ui/form-drawer"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { FormDrawer } from "@/components/molecules/form-drawer"
+import { Input } from "@/components/atoms/input"
+import { Label } from "@/components/atoms/label"
 import type { Category } from "@/lib/store/entities/categories"
 
 interface CategoryDrawerProps {

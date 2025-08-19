@@ -1,7 +1,7 @@
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/atoms/button';
 import { Plus } from 'lucide-react';
-import { TransactionTable } from '@/components/transactions/TransactionTable';
-import { PopulateDataButton } from '@/components/ui/populate-data-button';
+import { TransactionTable } from '@/components/organisms/transactions/TransactionTable';
+import { PopulateDataButton } from '@/components/molecules/populate-data-button';
 
 export function TransactionsPage() {
   return (

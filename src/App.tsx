@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import { RootLayout } from "./components/layout/RootLayout"
+import { RootLayout } from "@/components/organisms/layout/RootLayout"
 import { HomePage } from "./pages/HomePage"
 import { DashboardPage } from "./pages/DashboardPage"
 import { TransactionsPage } from "./pages/TransactionsPage"

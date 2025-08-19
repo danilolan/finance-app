@@ -5,14 +5,14 @@ import { format } from "date-fns"
 import { Calendar as CalendarIcon } from "lucide-react"
 
 import { cn } from "@/lib/utils"
-import { Button } from "./button"
-import { Calendar } from "./calendar"
+import { Button } from "@/components/atoms/button"
+import { Calendar } from "@/components/molecules/calendar"
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "./popover"
-import { Label } from "./label"
+} from "@/components/molecules/popover"
+import { Label } from "@/components/atoms/label"
 
 interface DatePickerProps {
   date?: Date

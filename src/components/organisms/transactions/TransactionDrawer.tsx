@@ -1,16 +1,16 @@
-import { FormDrawer } from "@/components/ui/form-drawer"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { DatePicker } from "@/components/ui/date-picker"
+import { FormDrawer } from "@/components/molecules/form-drawer"
+import { Input } from "@/components/atoms/input"
+import { Label } from "@/components/atoms/label"
+import { DatePicker } from "@/components/molecules/date-picker"
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
+} from "@/components/molecules/select"
 import { useCategoryStore } from "@/lib/store/entities/categories"
-import { EmptyState } from "@/components/ui/empty-state"
+import { EmptyState } from "@/components/atoms/empty-state"
 import type { Transaction } from "@/lib/store/entities/transactions"
 
 interface TransactionDrawerProps {
