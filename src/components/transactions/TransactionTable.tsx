@@ -6,6 +6,7 @@ import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { DataTable } from "@/components/ui/data-table/data-table"
+import { Money } from "@/components/ui/money"
 import { useTransactionStore } from "@/lib/store/transactions"
 import { useCategoryStore } from "@/lib/store/categories"
 import type { Transaction } from "@/lib/store/transactions"
@@ -145,11 +146,11 @@ export function TransactionTable() {
       ),
       cell: ({ row }) => {
         const price = row.getValue("price") as number
-        const formatted = new Intl.NumberFormat('en-US', {
-          style: 'currency',
-          currency: 'USD'
-        }).format(price)
-        return <div className="text-right text-xs font-medium">{formatted}</div>
+        return (
+          <div className="text-right">
+            <Money value={price} colored={false} className="text-xs font-medium" />
+          </div>
+        )
       },
     },
     {
