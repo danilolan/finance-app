@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom"
 import { BarChart3Icon, HomeIcon, LayoutDashboardIcon, TableIcon, TagsIcon } from "lucide-react"
+import { DebugButton } from "@/components/organisms/debug/DebugButton"
 import {
   Sidebar,
   SidebarContent,
@@ -74,6 +75,18 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarFooter>
+        {import.meta.env.DEV && (
+          <SidebarGroup>
+            <SidebarGroupLabel>Development</SidebarGroupLabel>
+            <SidebarGroupContent>
+              <SidebarMenu>
+                <SidebarMenuItem>
+                  <DebugButton />
+                </SidebarMenuItem>
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        )}
         <div className="px-2 py-4">
           <p className="text-xs text-muted-foreground">
             Finance App v1.0.0

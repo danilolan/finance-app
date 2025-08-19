@@ -6,7 +6,11 @@ import { useCategoryStore } from '@/lib/store/entities/categories';
 import { useTransactionStore } from '@/lib/store/entities/transactions';
 import { toast } from 'sonner';
 
-export function PopulateDataButton() {
+interface PopulateDataButtonProps {
+  className?: string;
+}
+
+export function PopulateDataButton({ className }: PopulateDataButtonProps) {
   const categoryStore = useCategoryStore();
   const transactionStore = useTransactionStore();
 
@@ -24,6 +28,7 @@ export function PopulateDataButton() {
     <Button
       variant="outline"
       onClick={handlePopulate}
+      className={className}
     >
       Populate Mock Data
     </Button>
