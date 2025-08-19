@@ -10,7 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useCategoryStore } from "@/lib/store/entities/categories"
-import { Uncategorized } from "@/components/ui/uncategorized"
+import { EmptyState } from "@/components/ui/empty-state"
 import type { Transaction } from "@/lib/store/entities/transactions"
 
 interface TransactionDrawerProps {
@@ -93,7 +93,7 @@ export function TransactionDrawer({
               <SelectValue placeholder="Select a category" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="uncategorized"><Uncategorized /></SelectItem>
+              <SelectItem value="uncategorized"><EmptyState type="uncategorized" /></SelectItem>
               {categories.map((category) => (
                 <SelectItem key={category.id} value={category.id}>
                   {category.name}

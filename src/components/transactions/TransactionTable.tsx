@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { DataTable } from "@/components/ui/data-table/data-table"
 import { Money } from "@/components/ui/money"
-import { Uncategorized } from "@/components/ui/uncategorized"
+import { EmptyState } from "@/components/ui/empty-state"
 import { useTransactionStore } from "@/lib/store/entities/transactions"
 import { useCategoryStore } from "@/lib/store/entities/categories"
 import type { Transaction } from "@/lib/store/entities/transactions"
@@ -111,7 +111,11 @@ export function TransactionTable() {
         </Button>
       ),
       cell: ({ row }) => {
-        const date = new Date(row.getValue("date"))
+        const dateValue = row.getValue("date") as string | null | undefined
+        if (!dateValue) {
+          return <div className="pl-3 text-xs"><EmptyState type="date" /></div>
+        }
+        const date = new Date(dateValue)
         return <div className="pl-3 text-xs">{date.toLocaleDateString()}</div>
       },
     },
@@ -130,7 +134,7 @@ export function TransactionTable() {
       cell: ({ row }) => {
         const categoryId = row.getValue("category") as string | null | undefined
         const category = categoryId ? categories.find(c => c.id === categoryId) : null
-        return <div className="pl-2 text-xs">{category?.name || <Uncategorized />}</div>
+        return <div className="pl-2 text-xs">{category?.name || <EmptyState type="uncategorized" />}</div>
       },
     },
     {
