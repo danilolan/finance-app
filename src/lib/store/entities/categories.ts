@@ -1,5 +1,5 @@
-import type { BaseEntity } from './types';
-import { createEntityStore } from './createEntityStore';
+import type { BaseEntity } from '../types';
+import { createEntityStore } from '../createEntityStore';
 
 export interface Category extends BaseEntity {
   name: string;

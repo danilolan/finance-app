@@ -36,8 +36,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { useCategoryStore } from "@/lib/store/categories"
-import type { Category } from "@/lib/store/categories"
+import { useCategoryStore } from "@/lib/store/entities/categories"
+import type { Category } from "@/lib/store/entities/categories"
 import { CategoryDrawer } from "./CategoryDrawer"
 
 export const columns: ColumnDef<Category>[] = [

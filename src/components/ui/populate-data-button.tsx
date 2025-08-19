@@ -2,8 +2,8 @@
 
 import { Button } from './button';
 import { populateStores } from '@/lib/store/mock-data';
-import { useCategoryStore } from '@/lib/store/categories';
-import { useTransactionStore } from '@/lib/store/transactions';
+import { useCategoryStore } from '@/lib/store/entities/categories';
+import { useTransactionStore } from '@/lib/store/entities/transactions';
 import { toast } from 'sonner';
 
 export function PopulateDataButton() {

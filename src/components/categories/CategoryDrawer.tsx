@@ -1,7 +1,7 @@
 import { FormDrawer } from "@/components/ui/form-drawer"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import type { Category } from "@/lib/store/categories"
+import type { Category } from "@/lib/store/entities/categories"
 
 interface CategoryDrawerProps {
   category?: Category

@@ -1,4 +1,4 @@
-import type { Category } from './categories';
+import type { Category } from './entities/categories';
 import type { Transaction } from './transactions';
 import type { BaseEntity } from './types';
 

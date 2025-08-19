@@ -8,8 +8,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { useCategoryStore } from "@/lib/store/categories"
-import type { Transaction } from "@/lib/store/transactions"
+import { useCategoryStore } from "@/lib/store/entities/categories"
+import { Uncategorized } from "@/components/ui/uncategorized"
+import type { Transaction } from "@/lib/store/entities/transactions"
 
 interface TransactionDrawerProps {
   transaction?: Transaction
@@ -32,7 +33,7 @@ export function TransactionDrawer({
     const data: Partial<Transaction> = {
       name: formData.name,
       date: formData.date,
-      category: formData.category,
+      category: formData.category === "uncategorized" ? null : formData.category,
       price: parseFloat(formData.price),
       installment: formData.installmentTotal ? {
         current: parseInt(formData.installmentCurrent),
@@ -81,11 +82,12 @@ export function TransactionDrawer({
 
         <div className="grid gap-2">
           <Label htmlFor="category">Category</Label>
-          <Select name="category" defaultValue={transaction?.category}>
+          <Select name="category" defaultValue={transaction?.category || "uncategorized"}>
             <SelectTrigger>
               <SelectValue placeholder="Select a category" />
             </SelectTrigger>
             <SelectContent>
+              <SelectItem value="uncategorized"><Uncategorized /></SelectItem>
               {categories.map((category) => (
                 <SelectItem key={category.id} value={category.id}>
                   {category.name}

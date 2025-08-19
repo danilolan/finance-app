@@ -7,9 +7,10 @@ import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox"
 import { DataTable } from "@/components/ui/data-table/data-table"
 import { Money } from "@/components/ui/money"
-import { useTransactionStore } from "@/lib/store/transactions"
-import { useCategoryStore } from "@/lib/store/categories"
-import type { Transaction } from "@/lib/store/transactions"
+import { Uncategorized } from "@/components/ui/uncategorized"
+import { useTransactionStore } from "@/lib/store/entities/transactions"
+import { useCategoryStore } from "@/lib/store/entities/categories"
+import type { Transaction } from "@/lib/store/entities/transactions"
 import { TransactionDrawer } from "./TransactionDrawer"
 
 export function TransactionTable() {
@@ -127,9 +128,9 @@ export function TransactionTable() {
         </Button>
       ),
       cell: ({ row }) => {
-        const categoryId = row.getValue("category") as string
-        const category = categories.find(c => c.id === categoryId)
-        return <div className="pl-2 text-xs">{category?.name}</div>
+        const categoryId = row.getValue("category") as string | null | undefined
+        const category = categoryId ? categories.find(c => c.id === categoryId) : null
+        return <div className="pl-2 text-xs">{category?.name || <Uncategorized />}</div>
       },
     },
     {
