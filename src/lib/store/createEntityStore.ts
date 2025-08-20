@@ -2,9 +2,14 @@ import { create } from 'zustand';
 import type { BaseEntity, StoreState, StoreMethods } from './types';
 import { storage } from './storage';
 
+interface EntityStoreOptions<T extends BaseEntity> {
+  beforeAdd?: (item: Omit<T, keyof BaseEntity>) => Omit<T, keyof BaseEntity>;
+}
+
 export function createEntityStore<T extends BaseEntity>(
   storageKey: string,
-  initialState: T[] = []
+  initialState: T[] = [],
+  options: EntityStoreOptions<T> = {}
 ) {
   type State = StoreState<T> & StoreMethods<T>;
 
@@ -18,8 +23,9 @@ export function createEntityStore<T extends BaseEntity>(
       error: null,
 
       add: async (item: Omit<T, keyof BaseEntity>) => {
+        const processedItem = options.beforeAdd ? options.beforeAdd(item) : item;
         const newItem = {
-          ...item,
+          ...processedItem,
           id: crypto.randomUUID(),
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),

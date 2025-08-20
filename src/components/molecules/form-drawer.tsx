@@ -16,8 +16,8 @@ interface FormDrawerProps {
   title: string
   description: string
   isEditing?: boolean
-  onSave: (data: any) => void
-  onAdd?: (data: any) => void
+  onSave: (data: FormData) => void
+  onAdd?: (data: FormData) => void
   children: React.ReactNode
 }
 
@@ -34,13 +34,12 @@ export function FormDrawer({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     const formData = new FormData(e.target as HTMLFormElement)
-    const data = Object.fromEntries(formData)
     
     if (isEditing) {
-      onSave(data)
+      onSave(formData)
       onOpenChange(false)
     } else if (onAdd) {
-      onAdd(data)
+      onAdd(formData)
       // Reset form
       const form = e.target as HTMLFormElement
       form.reset()

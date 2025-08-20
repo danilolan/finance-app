@@ -10,6 +10,7 @@ import { Checkbox } from "@/components/atoms/checkbox"
 import { DataTable } from "@/components/organisms/data-table/data-table"
 import { useCategoryStore } from "@/lib/store/entities/categories"
 import type { Category } from "@/lib/store/entities/categories"
+import { colors } from "@/lib/constants/colors"
 import { CategoryDrawer } from "./CategoryDrawer"
 
 export const columns: ColumnDef<Category>[] = [
@@ -34,6 +35,25 @@ export const columns: ColumnDef<Category>[] = [
     ),
     enableSorting: false,
     enableHiding: false,
+  },
+  {
+    accessorKey: "color",
+    header: "Color",
+    cell: ({ row }) => {
+      const colorId = row.getValue("color") as string;
+      const color = colors.find(c => c.id === colorId);
+      return (
+        <div className="flex items-center gap-2 pl-2">
+          <div 
+            className="h-4 w-4 rounded-full" 
+            style={{ 
+              backgroundColor: color?.value,
+              border: `1px solid ${color?.value}` 
+            }} 
+          />
+        </div>
+      );
+    },
   },
   {
     accessorKey: "name",
@@ -138,10 +158,10 @@ export function CategoriesTable() {
     return () => window.removeEventListener('open-category-drawer', handleOpenDrawer)
   }, [])
 
-  const handleAdd = (name: string) => {
+  const handleAdd = (data: { name: string; color: string }) => {
     toast.promise(
       () => {
-        add({ name })
+        add(data)
         return Promise.resolve()
       },
       {
@@ -152,11 +172,11 @@ export function CategoriesTable() {
     )
   }
 
-  const handleUpdate = (name: string) => {
+  const handleUpdate = (data: { name: string; color: string }) => {
     if (selectedCategory) {
       toast.promise(
         () => {
-          update(selectedCategory.id, { name })
+          update(selectedCategory.id, data)
           return Promise.resolve()
         },
         {

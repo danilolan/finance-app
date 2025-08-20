@@ -4,16 +4,16 @@ import type { BaseEntity } from './types';
 
 // Mock Categories
 export const mockCategories: Omit<Category, keyof BaseEntity>[] = [
-  { name: 'Food & Dining' },
-  { name: 'Shopping' },
-  { name: 'Transportation' },
-  { name: 'Bills & Utilities' },
-  { name: 'Entertainment' },
-  { name: 'Health & Fitness' },
-  { name: 'Travel' },
-  { name: 'Education' },
-  { name: 'Investments' },
-  { name: 'Income' },
+  { name: 'Food & Dining', color: 'pastel-peach' },
+  { name: 'Shopping', color: 'pastel-pink' },
+  { name: 'Transportation', color: 'pastel-blue' },
+  { name: 'Bills & Utilities', color: 'pastel-purple' },
+  { name: 'Entertainment', color: 'pastel-yellow' },
+  { name: 'Health & Fitness', color: 'pastel-mint' },
+  { name: 'Travel', color: 'pastel-sky' },
+  { name: 'Education', color: 'pastel-lavender' },
+  { name: 'Investments', color: 'pastel-green' },
+  { name: 'Income', color: 'pastel-teal' },
 ];
 
 // Helper to generate random date within last 3 months
