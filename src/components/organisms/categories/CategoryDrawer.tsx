@@ -1,47 +1,60 @@
-import { FormDrawer } from "@/components/molecules/form-drawer"
-import { Input } from "@/components/atoms/input"
-import { Label } from "@/components/atoms/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/atoms/select"
-import type { Category } from "@/lib/store/entities/categories"
-import { colors } from "@/lib/constants/colors"
+import { useEffect } from "react";
+import { toast } from "sonner";
+import { Input } from "@/components/atoms/input";
+import { Label } from "@/components/atoms/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/atoms/select";
+import { FormDrawer } from "@/components/molecules/form-drawer";
+import type { CreateCategoryDto } from "@/lib/api/dtos/category.dto";
+import { colors } from "@/lib/constants/colors";
+import { useCategoryStore } from "@/lib/store/category.store";
 
-interface CategoryDrawerProps {
-  category?: Category
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  onSave?: (data: { name: string; color: string }) => void
-  onAdd?: (data: { name: string; color: string }) => void
-}
+export function CategoryDrawer() {
+  const { selectedCategory, isLoading, createCategory, updateCategory, setSelectedCategory } = useCategoryStore();
 
-export function CategoryDrawer({ 
-  category, 
-  open, 
-  onOpenChange, 
-  onSave, 
-  onAdd 
-}: CategoryDrawerProps) {
-  const handleSubmit = (formData: FormData) => {
-    const data = {
-      name: formData.get('name') as string,
-      color: formData.get('color') as string || colors[0].id // Fallback to first color if none selected
+  const isEditMode = !!selectedCategory?.id;
+  const isOpen = selectedCategory !== null;
+
+  const handleSave = async (formData: FormData) => {
+    const data: CreateCategoryDto = {
+      name: formData.get("name") as string,
+      color: formData.get("color") as string,
     };
 
-    if (category && onSave) {
-      onSave(data)
-    } else if (onAdd) {
-      onAdd(data)
+    try {
+      if (isEditMode && selectedCategory?.id) {
+        await updateCategory(selectedCategory.id, data);
+        toast.success("Category updated successfully");
+      }
+      setSelectedCategory(null);
+    } catch (error) {
+      // Error is already handled by the store
     }
-  }
+  };
+
+  const handleAdd = async (formData: FormData) => {
+    const data: CreateCategoryDto = {
+      name: formData.get("name") as string,
+      color: formData.get("color") as string,
+    };
+
+    try {
+      await createCategory(data);
+      toast.success("Category created successfully");
+      setSelectedCategory(null);
+    } catch (error) {
+      // Error is already handled by the store
+    }
+  };
 
   return (
     <FormDrawer
-      open={open}
-      onOpenChange={onOpenChange}
+      open={isOpen}
+      onOpenChange={(open) => !open && setSelectedCategory(null)}
       title="Category"
-      description="Categories help you organize your transactions."
-      isEditing={!!category}
-      onSave={handleSubmit}
-      onAdd={handleSubmit}
+      description="Manage your transaction categories"
+      isEditing={isEditMode}
+      onSave={handleSave}
+      onAdd={handleAdd}
     >
       <div className="grid gap-4">
         <div className="grid gap-2">
@@ -49,30 +62,31 @@ export function CategoryDrawer({
           <Input
             id="name"
             name="name"
-            placeholder="Category name"
-            defaultValue={category?.name}
-            autoComplete="off"
+            defaultValue={isEditMode ? selectedCategory?.name : ""}
+            required
           />
         </div>
         <div className="grid gap-2">
           <Label htmlFor="color">Color</Label>
-          <Select name="color" defaultValue={category?.color}>
+          <Select 
+            name="color" 
+            defaultValue={isEditMode ? selectedCategory?.color : colors[0].value}
+          >
             <SelectTrigger>
               <SelectValue placeholder="Select a color" />
             </SelectTrigger>
             <SelectContent>
               {colors.map((color) => (
-                <SelectItem key={color.id} value={color.id}>
-                  <div className="flex items-center gap-2">
-                    <div 
-                      className="h-4 w-4 rounded-full" 
-                      style={{ 
-                        backgroundColor: color.value,
-                        border: `1px solid ${color.value}` 
-                      }} 
-                    />
-                    <span>{color.name}</span>
-                  </div>
+                <SelectItem
+                  key={color.id}
+                  value={color.value}
+                  className="flex items-center gap-2"
+                >
+                  <div
+                    className="w-4 h-4 rounded"
+                    style={{ backgroundColor: color.value }}
+                  />
+                  {color.name}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -80,5 +94,5 @@ export function CategoryDrawer({
         </div>
       </div>
     </FormDrawer>
-  )
+  );
 }

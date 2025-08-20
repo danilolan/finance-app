@@ -1,219 +1,67 @@
-"use client"
-
-import * as React from "react"
-import type { ColumnDef } from "@tanstack/react-table"
-import { ArrowUpDown, Pencil, Trash } from "lucide-react"
-import { toast } from "sonner"
-
-import { Button } from "@/components/atoms/button"
-import { Checkbox } from "@/components/atoms/checkbox"
-import { DataTable } from "@/components/organisms/data-table/data-table"
-import { useCategoryStore } from "@/lib/store/entities/categories"
-import type { Category } from "@/lib/store/entities/categories"
-import { colors } from "@/lib/constants/colors"
-import { CategoryDrawer } from "./CategoryDrawer"
-
-export const columns: ColumnDef<Category>[] = [
-  {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
-    accessorKey: "color",
-    header: "Color",
-    cell: ({ row }) => {
-      const colorId = row.getValue("color") as string;
-      const color = colors.find(c => c.id === colorId);
-      return (
-        <div className="flex items-center gap-2 pl-2">
-          <div 
-            className="h-4 w-4 rounded-full" 
-            style={{ 
-              backgroundColor: color?.value,
-              border: `1px solid ${color?.value}` 
-            }} 
-          />
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "name",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Name
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
-    cell: ({ row }) => <div className="capitalize pl-3">{row.getValue("name")}</div>,
-  },
-  {
-    accessorKey: "createdAt",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Created At
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
-    cell: ({ row }) => {
-      const date = new Date(row.getValue("createdAt"))
-      return <div>{date.toLocaleDateString()}</div>
-    },
-  },
-  {
-    id: "actions",
-    enableHiding: false,
-    header: () => <div className="text-right">Actions</div>,
-    cell: ({ row, table }) => {
-      const category = row.original
-      const { remove } = useCategoryStore()
-      const { setSelectedCategory, setOpen } = table.options.meta as {
-        setSelectedCategory: (category: Category) => void
-        setOpen: (open: boolean) => void
-      }
-
-      const handleDelete = () => {
-        toast.promise(
-          () => {
-            remove(category.id)
-            return Promise.resolve()
-          },
-          {
-            loading: 'Deleting category...',
-            success: 'Category deleted successfully',
-            error: 'Failed to delete category',
-          }
-        )
-      }
-
-      return (
-        <div className="text-right">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8"
-            onClick={() => {
-              setSelectedCategory(category)
-              setOpen(true)
-            }}
-          >
-            <Pencil className="h-4 w-4" />
-            <span className="sr-only">Edit</span>
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8 text-red-600 hover:text-red-700"
-            onClick={handleDelete}
-          >
-            <Trash className="h-4 w-4" />
-            <span className="sr-only">Delete</span>
-          </Button>
-        </div>
-      )
-    },
-  },
-]
+import { Edit, Trash } from "lucide-react";
+import { toast } from "sonner";
+import { Button } from "@/components/atoms/button";
+import { DataTable } from "@/components/organisms/data-table/data-table";
+import { useCategoryStore } from "@/lib/store/category.store";
 
 export function CategoriesTable() {
-  const { items, update, add } = useCategoryStore()
-  const [open, setOpen] = React.useState(false)
-  const [selectedCategory, setSelectedCategory] = React.useState<Category | undefined>()
+  const { categories, isLoading, deleteCategory, setSelectedCategory } = useCategoryStore();
 
-  React.useEffect(() => {
-    const handleOpenDrawer = () => {
-      setSelectedCategory(undefined)
-      setOpen(true)
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteCategory(id);
+      toast.success("Category deleted successfully");
+    } catch (error) {
+      // Error is already handled by the store
     }
-    
-    window.addEventListener('open-category-drawer', handleOpenDrawer)
-    return () => window.removeEventListener('open-category-drawer', handleOpenDrawer)
-  }, [])
+  };
 
-  const handleAdd = (data: { name: string; color: string }) => {
-    toast.promise(
-      () => {
-        add(data)
-        return Promise.resolve()
-      },
-      {
-        loading: 'Creating category...',
-        success: 'Category created successfully',
-        error: 'Failed to create category',
-      }
-    )
-  }
-
-  const handleUpdate = (data: { name: string; color: string }) => {
-    if (selectedCategory) {
-      toast.promise(
-        () => {
-          update(selectedCategory.id, data)
-          return Promise.resolve()
-        },
-        {
-          loading: 'Updating category...',
-          success: 'Category updated successfully',
-          error: 'Failed to update category',
-        }
-      )
-    }
-  }
+  const columns = [
+    {
+      header: "Name",
+      accessorKey: "name",
+    },
+    {
+      header: "Color",
+      accessorKey: "color",
+      cell: ({ row }: any) => (
+        <div className="flex items-center gap-2">
+          <div
+            className="w-4 h-4 rounded"
+            style={{ backgroundColor: row.original.color }}
+          />
+          {row.original.color}
+        </div>
+      ),
+    },
+    {
+      header: "Actions",
+      accessorKey: "actions",
+      cell: ({ row }: any) => (
+        <div className="flex items-center gap-2">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setSelectedCategory(row.original)}
+          >
+            <Edit className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => handleDelete(row.original.id)}
+          >
+            <Trash className="h-4 w-4" />
+          </Button>
+        </div>
+      ),
+    },
+  ];
 
   return (
-    <div className="w-full">
-      <DataTable
-        columns={columns}
-        data={items}
-        filterColumn="name"
-        defaultVisibility={{
-          createdAt: false
-        }}
-        meta={{
-          setSelectedCategory,
-          setOpen,
-        }}
-      />
-      <CategoryDrawer
-        category={selectedCategory}
-        open={open}
-        onOpenChange={(isOpen) => {
-          setOpen(isOpen)
-          if (!isOpen) {
-            setSelectedCategory(undefined)
-          }
-        }}
-        onSave={handleUpdate}
-        onAdd={handleAdd}
-      />
-    </div>
-  )
+    <DataTable
+      columns={columns}
+      data={categories}
+    />
+  );
 }
