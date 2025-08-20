@@ -1,6 +1,19 @@
 import { create } from 'zustand';
-import type { AuthState } from '../types/auth';
-import { authService } from '../services/auth.service';
+import { authService } from '../api/services/auth.service';
+import type { LoginRequestDto, RegisterRequestDto } from '../api/dtos/auth/request';
+import type { UserDto } from '../api/dtos/user';
+
+interface AuthState {
+  user: UserDto | null;
+  token: string | null;
+  isLoading: boolean;
+  error: string | null;
+  isAuthenticated: boolean;
+  login: (data: LoginRequestDto) => Promise<void>;
+  register: (data: RegisterRequestDto) => Promise<void>;
+  logout: () => void;
+  clearError: () => void;
+}
 
 export const useAuthStore = create<AuthState>((set) => ({
   user: null,
@@ -56,10 +69,9 @@ export const useAuthStore = create<AuthState>((set) => ({
 if (localStorage.getItem('auth_token')) {
   authService.me()
     .then(user => {
-      useAuthStore.setState({ user }); // Update with user data directly
+      useAuthStore.setState({ user });
     })
     .catch(() => {
-      // If fetching user data fails, clear the auth state
       useAuthStore.getState().logout();
     });
 }

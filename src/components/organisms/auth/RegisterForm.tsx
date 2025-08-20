@@ -1,16 +1,21 @@
 import { Button } from "@/components/atoms/button";
 import { Input } from "@/components/atoms/input";
 import { Label } from "@/components/atoms/label";
-import type { AuthFormProps, RegisterFormData } from "@/lib/types/auth";
+import type { RegisterRequestDto } from "@/lib/api/dtos/auth/request";
 
-export function RegisterForm({ onSubmit, isLoading }: AuthFormProps) {
+interface RegisterFormProps {
+  onSubmit: (data: RegisterRequestDto) => void;
+  isLoading?: boolean;
+}
+
+export function RegisterForm({ onSubmit, isLoading }: RegisterFormProps) {
   return (
     <div className="space-y-4">
       <h2 className="text-2xl font-bold">Register</h2>
       <form onSubmit={(e) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
-        const data: RegisterFormData = {
+        const data: RegisterRequestDto = {
           name: formData.get("name") as string,
           email: formData.get("email") as string,
           password: formData.get("password") as string,
