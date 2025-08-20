@@ -29,7 +29,7 @@ alwaysApply: true
   - Use Shadcn UI, Radix, and Tailwind for components and styling.
   - Implement responsive design with Tailwind CSS;
   - Use dark theme and focus in a clean and functional design
-  
+  - Always use npx shadcn@latest add ... to add a shadcn component
   Performance Optimization
   - Minimize 'use client', 'useEffect', and 'setState'; favor React Server Components (RSC).
   - Wrap client components in Suspense with fallback.

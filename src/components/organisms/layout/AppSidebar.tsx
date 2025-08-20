@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import { BarChart3Icon, HomeIcon, LayoutDashboardIcon, TableIcon, TagsIcon } from "lucide-react"
 import { DebugButton } from "@/components/organisms/debug/DebugButton"
+import { UserProfileButton } from "@/components/molecules/user-profile-button"
 import {
   Sidebar,
   SidebarContent,
@@ -87,12 +88,8 @@ export function AppSidebar() {
             </SidebarGroupContent>
           </SidebarGroup>
         )}
-        <div className="px-2 py-4">
-          <p className="text-xs text-muted-foreground">
-            Finance App v1.0.0
-            <br />
-            © 2024 All rights reserved
-          </p>
+        <div className="space-y-4">
+          <UserProfileButton />
         </div>
       </SidebarFooter>
     </Sidebar>

@@ -18,8 +18,8 @@ export const authService = {
     return response.data;
   },
 
-  async me(): Promise<BaseResponse<User>> {
-    const response = await api.get<BaseResponse<User>>('/auth/me');
+  async me(): Promise<User> {
+    const response = await api.get<User>('/auth/me');
     return response.data;
   },
 

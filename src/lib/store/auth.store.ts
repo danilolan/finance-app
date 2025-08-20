@@ -51,3 +51,15 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   clearError: () => set({ error: null }),
 }));
+
+// Initialize user data if token exists
+if (localStorage.getItem('auth_token')) {
+  authService.me()
+    .then(user => {
+      useAuthStore.setState({ user }); // Update with user data directly
+    })
+    .catch(() => {
+      // If fetching user data fails, clear the auth state
+      useAuthStore.getState().logout();
+    });
+}
