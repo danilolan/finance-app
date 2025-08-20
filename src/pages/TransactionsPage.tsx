@@ -1,7 +1,7 @@
 import { Button } from '@/components/atoms/button';
 import { Plus } from 'lucide-react';
 import { TransactionTable } from '@/components/organisms/transactions/TransactionTable';
-import { PopulateDataButton } from '@/components/molecules/populate-data-button';
+
 
 export function TransactionsPage() {
   return (
@@ -9,7 +9,6 @@ export function TransactionsPage() {
       <div className="flex shrink-0 items-center justify-between">
         <h1 className="text-3xl font-bold tracking-tight">Transactions</h1>
         <div className="flex items-center gap-2">
-          <PopulateDataButton />
           <Button onClick={() => window.dispatchEvent(new CustomEvent('open-transaction-drawer'))}>
             <Plus className="mr-2 h-4 w-4" />
             Add Transaction
