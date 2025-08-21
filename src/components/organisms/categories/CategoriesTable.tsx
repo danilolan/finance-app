@@ -18,27 +18,29 @@ export function CategoriesTable() {
 
   const columns = [
     {
-      header: "Name",
-      accessorKey: "name",
-    },
-    {
       header: "Color",
       accessorKey: "color",
       cell: ({ row }: any) => (
-        <div className="flex items-center gap-2">
+        <div className="w-[30px]">
           <div
             className="w-4 h-4 rounded"
             style={{ backgroundColor: row.original.color }}
           />
-          {row.original.color}
         </div>
       ),
     },
     {
-      header: "Actions",
-      accessorKey: "actions",
+      header: "Name",
+      accessorKey: "name",
       cell: ({ row }: any) => (
-        <div className="flex items-center gap-2">
+        <div className="">{row.getValue("name")}</div>
+      ),
+    },
+    {
+      id: "actions",
+      header: () => <div className="text-right">Actions</div>,
+      cell: ({ row }: any) => (
+        <div className="flex justify-end gap-2">
           <Button
             variant="ghost"
             size="icon"
