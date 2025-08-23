@@ -5,6 +5,7 @@ import type { TransactionDto, CreateTransactionDto, UpdateTransactionDto } from 
 interface TransactionState {
   transactions: TransactionDto[];
   isLoading: boolean;
+  isInitialLoading: boolean;
   error: string | null;
   selectedTransaction: TransactionDto | null;
   
@@ -20,18 +21,19 @@ interface TransactionState {
 export const useTransactionStore = create<TransactionState>((set) => ({
   transactions: [],
   isLoading: false,
+  isInitialLoading: false,
   error: null,
   selectedTransaction: null,
 
   fetchTransactions: async () => {
     try {
-      set({ isLoading: true, error: null });
+      set({ isInitialLoading: true, error: null });
       const transactions = await transactionService.getAll();
       set({ transactions });
     } catch (error: any) {
       set({ error: error.response?.data?.message || 'Failed to fetch transactions' });
     } finally {
-      set({ isLoading: false });
+      set({ isInitialLoading: false });
     }
   },
 
