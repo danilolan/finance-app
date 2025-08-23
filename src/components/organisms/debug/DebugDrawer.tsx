@@ -7,7 +7,6 @@ import {
   SheetTitle,
 } from "@/components/molecules/sheet";
 import { Separator } from "@/components/atoms/separator";
-import { PopulateDataButton } from "@/components/molecules/populate-data-button";
 import { DebugGroup } from "./DebugGroup";
 
 interface DebugDrawerProps {
@@ -31,7 +30,9 @@ export function DebugDrawer({ open, onOpenChange }: DebugDrawerProps) {
         <div className="space-y-6 px-4">
           <DebugGroup title="Data">
             <div className="flex items-center gap-2 flex-wrap">
-              <PopulateDataButton className="flex-1" />
+              <p className="text-sm text-muted-foreground">
+                API-based data management is now active.
+              </p>
             </div>
           </DebugGroup>
         </div>
