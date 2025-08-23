@@ -33,6 +33,7 @@ import {
 } from "@/components/molecules/table"
 import { ScrollArea, ScrollBar } from "@/components/molecules/scroll-area"
 import { cn } from "@/lib/utils"
+import { DataTableSkeleton } from "./data-table-skeleton"
 
 interface DataTableProps<TData> {
   columns: ColumnDef<TData>[]
@@ -41,6 +42,7 @@ interface DataTableProps<TData> {
   defaultVisibility?: VisibilityState
   pageSize?: number
   meta?: Record<string, any>
+  isLoading?: boolean
 }
 
 export function DataTable<TData>({
@@ -50,6 +52,7 @@ export function DataTable<TData>({
   defaultVisibility,
   pageSize = 500,
   meta,
+  isLoading = false,
 }: DataTableProps<TData>) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
@@ -82,6 +85,17 @@ export function DataTable<TData>({
       },
     },
   })
+
+  if (isLoading) {
+    return (
+      <DataTableSkeleton 
+        columns={columns.length}
+        showFilter={!!filterColumn}
+        showColumnSelector={true}
+        showPagination={true}
+      />
+    );
+  }
 
   return (
     <div className="flex h-full min-h-0 flex-col gap-3">

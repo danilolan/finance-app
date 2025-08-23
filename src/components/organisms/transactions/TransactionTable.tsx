@@ -10,6 +10,7 @@ import { useCategoryStore } from "@/lib/store/category.store";
 export function TransactionTable() {
   const { 
     transactions,
+    isLoading,
     deleteTransaction, 
     setSelectedTransaction,
     fetchTransactions,
@@ -138,6 +139,7 @@ export function TransactionTable() {
     <DataTable
       columns={columns}
       data={transactions}
+      isLoading={isLoading}
     />
   );
 }
