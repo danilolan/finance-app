@@ -34,17 +34,24 @@ export function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <Card className="w-full max-w-4xl p-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <LoginForm onSubmit={handleLogin} isLoading={isLoading} />
-          <div className="hidden md:block">
-            <Separator orientation="vertical" className="h-full mx-auto" />
+    <div className="min-h-screen flex items-center justify-center p-4 bg-muted">
+      <Card className="w-full max-w-6xl p-8 bg-white shadow-2xl">
+        <div className="flex flex-col lg:flex-row gap-8">
+          <div className="flex-1">
+            <LoginForm onSubmit={handleLogin} isLoading={isLoading} />
           </div>
-          <div className="md:hidden">
+          
+          <div className="hidden lg:block">
+            <Separator orientation="vertical" className="h-full" />
+          </div>
+          
+          <div className="lg:hidden">
             <Separator className="w-full" />
           </div>
-          <RegisterForm onSubmit={handleRegister} isLoading={isLoading} />
+          
+          <div className="flex-1">
+            <RegisterForm onSubmit={handleRegister} isLoading={isLoading} />
+          </div>
         </div>
       </Card>
     </div>
