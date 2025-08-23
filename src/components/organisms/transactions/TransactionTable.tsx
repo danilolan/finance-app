@@ -17,11 +17,12 @@ export function TransactionTable() {
     clearError
   } = useTransactionStore();
   
-  const { categories } = useCategoryStore();
+  const { categories, fetchCategories } = useCategoryStore();
 
   useEffect(() => {
     fetchTransactions();
-  }, [fetchTransactions]);
+    fetchCategories();
+  }, [fetchTransactions, fetchCategories]);
 
   useEffect(() => {
     if (error) {
@@ -80,9 +81,11 @@ export function TransactionTable() {
       header: "Payment",
       accessorKey: "payment",
       cell: ({ row }: any) => (
-        <Money 
-          value={row.getValue("payment")} 
-          className="text-red-600 font-medium" 
+        row.getValue("payment") == 0 ?  <div className="text-gray-500">---</div>
+          :
+          <Money 
+            value={row.getValue("payment")} 
+            className="text-red-600 font-medium" 
         />
       ),
     },
@@ -90,9 +93,11 @@ export function TransactionTable() {
       header: "Deposit",
       accessorKey: "deposit",
       cell: ({ row }: any) => (
-        <Money 
-          value={row.getValue("deposit")} 
-          className="text-green-600 font-medium" 
+        row.getValue("deposit") == 0 ?  <div className="text-gray-500">---</div>
+          :
+          <Money 
+            value={row.getValue("deposit")} 
+            className="text-green-600 font-medium" 
         />
       ),
     },
