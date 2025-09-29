@@ -1,4 +1,4 @@
-import type { BaseEntity, BaseResponse } from './base';
+import type { BaseEntity } from './base';
 
 export interface User extends BaseEntity {
   name: string;

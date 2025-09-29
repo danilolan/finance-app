@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { toast } from "sonner";
 import { Input } from "@/components/atoms/input";
 import { Label } from "@/components/atoms/label";
@@ -9,7 +8,7 @@ import { colors } from "@/lib/constants/colors";
 import { useCategoryStore } from "@/lib/store/category.store";
 
 export function CategoryDrawer() {
-  const { selectedCategory, isLoading, createCategory, updateCategory, setSelectedCategory } = useCategoryStore();
+  const { selectedCategory, createCategory, updateCategory, setSelectedCategory } = useCategoryStore();
 
   const isEditMode = !!selectedCategory?.id;
   const isOpen = selectedCategory !== null;

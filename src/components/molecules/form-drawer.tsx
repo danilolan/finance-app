@@ -25,7 +25,6 @@ export function FormDrawer({
   open,
   onOpenChange,
   title,
-  description,
   isEditing,
   onSave,
   onAdd,

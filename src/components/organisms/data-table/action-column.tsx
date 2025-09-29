@@ -1,7 +1,7 @@
 import { type ColumnDef } from "@tanstack/react-table"
 import { Pencil, Trash } from "lucide-react"
 import { toast } from "sonner"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/atoms/button"
 
 interface ActionColumnProps<TData> {
   onEdit: (data: TData) => void

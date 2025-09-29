@@ -5,7 +5,7 @@ import { DataTable } from "@/components/organisms/data-table/data-table";
 import { useCategoryStore } from "@/lib/store/category.store";
 
 export function CategoriesTable() {
-  const { categories, isLoading, deleteCategory, setSelectedCategory } = useCategoryStore();
+  const { categories, deleteCategory, setSelectedCategory } = useCategoryStore();
 
   const handleDelete = async (id: string) => {
     try {

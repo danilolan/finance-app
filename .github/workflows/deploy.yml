@@ -32,6 +32,6 @@ jobs:
           port: 2222
           script: |
             cd /home/frodo/webapps/finance-app
-            docker compose down
+            docker-compose down
             docker build -t finance-app .
-            docker compose up -d
+            docker-compose up -d

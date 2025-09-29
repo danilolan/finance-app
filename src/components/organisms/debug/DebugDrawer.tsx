@@ -1,4 +1,4 @@
-import { Bug, Database } from 'lucide-react';
+import { Bug } from 'lucide-react';
 import {
   Sheet,
   SheetContent,
@@ -6,7 +6,6 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/molecules/sheet";
-import { Separator } from "@/components/atoms/separator";
 import { DebugGroup } from "./DebugGroup";
 
 interface DebugDrawerProps {
