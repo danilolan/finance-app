@@ -11,4 +11,4 @@ FROM node:18-slim
 WORKDIR /app
 RUN npm install -g serve
 COPY --from=builder /app/dist ./dist
-CMD ["serve", "-s", "dist", "-l", "3000"]
+CMD ["serve", "-s", "dist", "-l", "3000", "-H", "0.0.0.0"]
